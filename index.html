@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연장 수당 계산기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f6f8;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .main-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        
+        .tab-container {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            background: #f5f6f8;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .tab-btn.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        
+        .salary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 18px 0;
+            border-bottom: 1px solid #eee;
+            margin: 0;
+            box-shadow: none;
+            background: transparent;
+        }
+        
+        .salary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .salary-date {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+        
+        .salary-amount {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .salary-time {
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .salary-left {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .salary-right {
+            text-align: right;
+        }
+        
+        #monthTotal {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            color: #333;
+            font-size: 16px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .total-count {
+            color: #666;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .total-amount {
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            width: 45px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .salary-item .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin: 0;
+            width: 50px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        
+        .salary-item .edit-btn {
+            background: #f0f0f0;
+            color: #666;
+            border: none;
+        }
+        
+        .salary-item .delete-btn {
+            background: #ffebee;
+            color: #d32f2f;
+            border: none;
+        }
+        
+        .wage-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        #wageDisplay {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin: 15px 0;
+            width: 100%;
+            max-width: 100%;
+            gap: 18px;
+        }
+        
+        .wage-info {
+            font-size: 16px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        #currentWage {
+            font-weight: 500;
+            margin: 0 2px;
+            font-size: 17px;
+        }
+        
+        #wageInput {
+            text-align: center;
+        }
+        
+        #wageInput input {
+            max-width: 200px;
+            margin: 0 auto 10px auto;
+        }
+        
+        #wageInput button {
+            max-width: 200px;
+            margin: 0 auto;
+        }
+        
+        #periodSelector {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        #periodSelector input {
+            flex: 1;
+        }
+        
+        #periodSelector button {
+            width: auto;
+        }
+        
+        /* 숫자 입력 필드의 화살표 제거 */
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            appearance: none;
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type="number"] {
+            appearance: textfield;
+            -moz-appearance: textfield;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+        }
+        
+        .pagination button {
+            background: #f0f0f0;
+            border: none;
+            min-width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #666;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 8px;
+        }
+        
+        .pagination button.active {
+            background: #007bff;
+            color: white;
+        }
+        
+        .pagination button:hover:not(.active) {
+            background: #e5e5e5;
+        }
+        
+        .page-btn {
+            font-weight: 500;
+        }
+        
+        .total-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 15px 0;
+        }
+        
+        .sort-container {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        
+        .sort-btn {
+            font-size: 13px;
+            color: #666;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+        
+        .sort-btn.active {
+            background: #007bff;
+            color: white;
+        }
+        
+        .sort-btn:hover:not(.active) {
+            background: #e5e5e5;
+        }
+        
+        #monthSelector {
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        #monthInput {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-card">
+            <div class="wage-container">
+                <div id="wageDisplay" style="display: none;">
+                    <div class="wage-info">계약시급: <span id="currentWage"></span>원</div>
+                    <button class="edit-btn" onclick="showWageInput()">수정</button>
+                </div>
+            </div>
+            
+            <div id="wageInput" class="input-group">
+                <label for="hourlyWage">계약시급</label>
+                <input type="number" id="hourlyWage" min="0" placeholder="시급을 입력하세요">
+                <button onclick="saveWage()">저장</button>
+            </div>
+        </div>
+
+        <div class="main-card">
+            <div class="input-group">
+                <label for="workDate">근무일</label>
+                <input type="date" id="workDate" required>
+            </div>
+            <div class="input-group">
+                <label for="overtimeMinutes" style="margin-top: 8px;">연장 근무 시간(분)</label>
+                <input type="number" id="overtimeMinutes" min="0" step="1" placeholder="분 단위로 입력">
+            </div>
+            <button onclick="handleSalaryAction()" id="calculateButton" style="margin-top: 10px;">계산하기</button>
+        </div>
+        
+        <div class="main-card">
+            <h2>연장 수당 내역</h2>
+            <div class="tab-container">
+                <button class="tab-btn active" onclick="showAllSalaries()">전체</button>
+                <button class="tab-btn" onclick="showMonthSalaries()">이번 달</button>
+                <button class="tab-btn" onclick="showMonthSelector()">월별 조회</button>
+            </div>
+            
+            <div id="monthSelector" style="display: none;">
+                <input type="month" id="monthInput" onchange="handleMonthSelect(this.value)">
+            </div>
+            
+            <div class="sort-container">
+                <button class="sort-btn active" onclick="setSortOrder('desc')">최신순</button>
+                <button class="sort-btn" onclick="setSortOrder('asc')">과거순</button>
+            </div>
+            
+            <div id="monthTotal"></div>
+            <div id="salaryList"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
