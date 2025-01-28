@@ -360,6 +360,64 @@
             font-size: 14px;
             color: #333;
         }
+        
+        .tab-buttons-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .reset-btn {
+            font-size: 12px;
+            color: #dc3545;
+            background: #ffebee;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: auto;
+            white-space: nowrap;
+        }
+        
+        .reset-btn:hover {
+            background: #ffdde1;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .tab-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .reset-btn {
+            font-size: 13px;
+            color: #dc3545;
+            background: #ffebee;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            cursor: pointer;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .reset-btn:hover {
+            background: #ffdde1;
+        }
     </style>
 </head>
 <body>
@@ -392,7 +450,10 @@
         </div>
         
         <div class="main-card">
-            <h2>연장 수당 내역</h2>
+            <div class="header-container">
+                <h2>연장 수당 내역</h2>
+                <button class="reset-btn" onclick="confirmReset()">초기화</button>
+            </div>
             <div class="tab-container">
                 <button class="tab-btn active" onclick="showAllSalaries()">전체</button>
                 <button class="tab-btn" onclick="showMonthSalaries()">이번 달</button>

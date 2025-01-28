@@ -637,4 +637,28 @@ function displayWage(wage) {
 function showWageInput() {
     document.getElementById('wageInput').style.display = 'block';
     document.getElementById('wageDisplay').style.display = 'none';
+}
+
+// 초기화 확인 및 실행 함수 추가
+function confirmReset() {
+    if (confirm('모든 연장 수당 내역이 삭제됩니다.\n정말 초기화하시겠습니까?')) {
+        resetSalaryData();
+    }
+}
+
+function resetSalaryData() {
+    try {
+        // 연장 수당 데이터만 초기화 (계약시급은 유지)
+        localStorage.setItem(CONSTANTS.STORAGE_KEYS.SALARY_DATA, JSON.stringify([]));
+        
+        // 화면 갱신
+        currentPage = 1;
+        displaySalaryList();
+        
+        // 성공 메시지
+        alert('연장 수당 내역이 초기화되었습니다.');
+    } catch (e) {
+        console.error('초기화 중 오류 발생:', e);
+        alert('초기화 중 오류가 발생했습니다.');
+    }
 } 
