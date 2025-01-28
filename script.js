@@ -305,13 +305,14 @@ function getYesterday() {
 
 // 입력 폼 초기화 함수 수정
 function clearInputs() {
+    // 연장 근무시간만 초기화
     document.getElementById('overtimeMinutes').value = '';
     
-    // 근무일을 어제 날짜로 설정
-    const workDateInput = document.getElementById('workDate');
-    if (workDateInput && !isEditMode) {
-        workDateInput.value = getYesterday();
-    }
+    // 근무일 초기화하지 않음 (이전 코드 제거)
+    // const workDateInput = document.getElementById('workDate');
+    // if (workDateInput && !isEditMode) {
+    //     workDateInput.value = getYesterday();
+    // }
 }
 
 // 급여 내역 삭제
